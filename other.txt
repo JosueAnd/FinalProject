@@ -1,0 +1,67 @@
+	// Printing a contact to a file
+//	fprintf(
+//			spContacts,
+//			"%u\n%s\n%s\n%u\n%s\n%s\n%s\n%u\n%lu\n%s\n",
+//			contact.id,
+//			contact.firstName,
+//			contact.lastName,
+//			contact.houseNumber,
+//			contact.streetName,
+//			contact.city,
+//			contact.state,
+//			contact.zip,
+//			contact.phoneNumber,
+//			contact.email
+//			);
+
+//	setID(&spContacts);
+
+	// Setting the file position to the beginning for reading.
+	rewind(spContacts);
+
+	// Reading a contact from the file.
+	fscanf(
+			spContacts,
+			"%u %[^\n] %[^\n] %u %[^\n] %[^\n] %[^\n] %u %lu %[^\n]",
+			&contact1.id,
+			contact1.firstName,
+			contact1.lastName,
+			&contact1.houseNumber,
+			contact1.streetName,
+			contact1.city,
+			contact1.state,
+			&contact1.zip,
+			&contact1.phoneNumber,
+			contact1.email
+			);
+
+	// Printing out the read in contact for verification that it was done properly.
+	printf(
+			"%u\n%s\n%s\n%u\n%s\n%s\n%s\n%u\n%lu\n%s\n",
+			contact1.id,
+			contact1.firstName,
+			contact1.lastName,
+			contact1.houseNumber,
+			contact1.streetName,
+			contact1.city,
+			contact1.state,
+			contact1.zip,
+			contact1.phoneNumber,
+			contact1.email
+	);
+
+
+	fscanf(
+    			*spFile,
+    			"%u %[^\n] %[^\n] %u %[^\n] %[^\n] %[^\n] %u %lu %[^\n]",
+    			&contact.id,
+    			contact.firstName,
+    			contact.lastName,
+    			&contact.houseNumber,
+    			contact.streetName,
+    			contact.city,
+    			contact.state,
+    			&contact.zip,
+    			&contact.phoneNumber,
+    			contact.email
+    	);

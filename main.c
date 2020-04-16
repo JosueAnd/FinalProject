@@ -8,37 +8,6 @@
  * Date:
  */
 
-/*
- * The struct should contain all fields related to what all people in your contacts have in
- * common,
- * vvvvvvvvvvvvvvvvvv
- * e.g., ID, first name, last name, street address, city, state, zip, phone, e-mail, etc.,
- * ^^^^^^^^^^^^^^^^^^
- * i.e., include fields you would typically expect to find in an address book. Make sure all data
- * entered by the user is appropriately validated. The application program should use a menu system
- * to do the functions concerning processing contacts,
- * vvvvvvvvvvvvvvvvvv
- * i.e., Create, Retrieve, Update, and Delete
- * ^^^^^^^^^^^^^^^^^^
- * (CRUD). Whether you use an array or list. The idea here is if the user selected Create from the
- * main menu, it would add a new contact, and then, add it to a single collection, e.g., an array.
- * As far as retrieving contacts, it should be able to retrieve all contacts, including all of their
- * data displayed in an appropriate list/table, and one or more contact's information as a result of
- * a search, which you can also use for the Update and Delete functions. Other search and sort
- * functions should be included as appropriate.
- * vvvvvvvvvvvvvvvvvv
- * It does need to be able to permanently store the information, e.g., to a file on the hard
- * drive. Make sure you thoroughly test saving and retrieving the information from a file,
- * ^^^^^^^^^^^^^^^^^^
- * because using pointers can make this tricky, i.e., the
- * next time the program is run from a different system, it may not retrieve the data as expected;
- * in other words, make sure you are saving the actual data and not just a pointer to the data.
- * Hint: Check for the appropriate file and retrieve any data at the start if necessary, i.e.,
- * the file may not exist initially, and then, create and save the data to a file at the end ready
- * to be retrieved the next time the program runs; in other words, you do not need to constantly
- * save and retrieve data from a file while the program is running.
- */
-
 // Preprocessor Directives
 #include <stdio.h>
 #include <stdlib.h>
@@ -88,11 +57,8 @@ int main() {
 	// Variables
 	FILE *spContacts = NULL;
 	Contact contacts[MAX_NUMBER_OF_CONTACTS] = {0};
-	String test;
 
-	getString(test);
-
-	// Open the file and retrieve contact information.
+	// Open the file, retrieve contact information and close file.
 //	openContactsFile("contacts.txt", &spContacts);
 //	readContactsFromFile(&spContacts, contacts);
 //	closeContactsFile(&spContacts);
@@ -106,19 +72,54 @@ int main() {
 	return 0;
 } // end function main
 
+/*
+ * Name:			createContact()
+ * Parameters:		contacts[]		The array where contacts are stored upon application start.
+ * Processes:		Prompt the user to enter values for all fields of a Contact and add to contacts.
+ * Return Value:	None.
+ */
 void createContact(Contact contacts[]) {
 	// Variables
 	Contact contact = {0};
 
+	// ID is auto set as last known ID + 1.
 	contact.id = setID(contacts);
+
+	// Getting all other fields as input from user.
+	printf("Please enter the first name of the contact: ");
 	getString(contact.firstName);
 
+	printf("Please enter the last name of the contact: ");
+	getString(contact.lastName);
+
+	printf("Please enter the house number of the contact: ");
+	//getInt(contact.houseNumber);
+
+	printf("Please enter the street name the contact lives at: ");
+	getString(contact.streetName);
+
+	printf("Please enter the city the contact lives in: ");
+	getString(contact.city);
+
+	printf("Please enter the state the contact lives in: ");
+	getString(contact.state);
+
+	printf("Please enter the contact's zip code: ");
+	//getInt(contact.zip);
+
+	printf("Please enter the contact's phone number: ");
+	//getInt(contact.phoneNumber);
+
+	printf("Please enter the contact's email: ");
+	getString(contact.email);
+
+	// Adding contact to contacts array, index is always ID - 1.
 	contacts[contact.id - 1] = contact;
 } // end function createContact
 
 /*
  * Name:			closeContactsFile()
- * Parameters:		spContacts	The place where the contacts file to be closed is stored.
+ * Parameters:		spFile		The place where the contacts file to be closed is stored.
  * Processes:		Close an open contacts file.
  * Return Value:	None.
  */
@@ -132,35 +133,50 @@ void closeContactsFile(FILE** spFile) {
 	} // end if
 } // end function closeContactsFile
 
-/* TODO: Incomplete documentation.
+/*
  * Name:			getString()
- * Parameters:		None.
- * Processes:		None.
+ * Parameters:		string		The String where user input will be stored.
+ * Processes:		Accepts input from the user and validates. If validation fails the function
+ * 					will loop, prompting for input until validation passes.
  * Return Value:	None.
  */
 void getString(String string) {
-	// FIXME: Incomplete function.
 	// Variables
 	String input = "";
+	bool errorFlag = false;
 
-	// Getting input from user.
-	printf("Enter a string: ");
-	scanf("%[^\n]", input);
-
-	// Validating input.
-	for (int length = strlen(input); length; length--) {
-		if (!isalpha(input[length - 1])) {
-			getString(string);
+	do {
+		// Getting user input. FIXME: Allow no input for empty field, set to zero?
+		if (fgets(input, MAX_STRING_LENGTH, stdin) == NULL) {
+			errorFlag = true; // If no characters read in or error occurs, set errorFlag to true
+		} else {
+			errorFlag = false;
 		}
-	}
 
-	// Sending string back to caller.
+		// Validating input.
+		for (unsigned long length = strlen(input); length; length--) {
+			if (!(isalpha(input[length - 1]) ||
+				  isspace(input[length - 1])) ||
+				errorFlag) {
+				errorFlag = true;
+				printf("\n**********\n\n");
+				printf("\tError: Invalid characters entered.");
+				printf("\t\tPlease try again, but with only characters A - Z or a - z.");
+				printf("\n\n**********\n");
+				break;
+			} else {
+				errorFlag = false;
+			}
+		} // end for loop
+	} while (errorFlag);
+
+	// Assigning user input to passed in field.
 	strcpy(string, input);
-}
+} // end function getString
 
-/*
+/* TODO: Incomplete documentation.
  * Name:			getUserChoice()
- * Parameters:		None.
+ * Parameters:		contacts[]		The array where contacts are stored upon application start.
  * Processes:		Get an integer choice matching a menu option and call appropriate functions
  * 					to carry out that process.
  * Return Value:	An integer representing the users choice to continue interacting with the
@@ -217,7 +233,7 @@ bool getUserChoice(Contact contacts[]) {
 /*
  * Name:			openContactsFile()
  * Parameters:		fileName	A string representing the name of the file to be opened.
- * 					spContacts	The place where the opened contacts file will stored.
+ * 					spFile		The place where the opened contacts file will stored.
  * Processes:		Open or create the contacts file in append mode.
  * Return Value:	None.
  */
@@ -233,26 +249,34 @@ void openContactsFile(String fileName, FILE** spFile) {
 
 /* TODO: Incomplete documentation.
  * Name:			printAllContacts()
- * Parameters:		None.
+ * Parameters:		contacts
  * Processes:		None.
  * Return Value:	None.
  */
 void printAllContacts(Contact contacts[]) {
 	for (int index = 0; index < MAX_NUMBER_OF_CONTACTS; index++) {
 		if (contacts[index].id != 0) {
+			// Print name.
 			printf(
-					"%u\n%s\n%s\n%u\n%s\n%s\n%s\n%u\n%lu\n%s\n",
-					contacts[index].id,
+					"Name: %s %s\n",
 					contacts[index].firstName,
-					contacts[index].lastName,
+					contacts[index].lastName
+			);
+			// Print address.
+			printf(
+					"Address:\n\t%u %s\n\t%s, %s %u\n",
 					contacts[index].houseNumber,
 					contacts[index].streetName,
 					contacts[index].city,
 					contacts[index].state,
-					contacts[index].zip,
+					contacts[index].zip
+					);
+			// Print contact information.
+			printf(
+					"Phone Number: %lu\nEmail: %s\n",
 					contacts[index].phoneNumber,
 					contacts[index].email
-			);
+					);
 		}
 	}
 } // end function printAllContacts
@@ -307,6 +331,7 @@ void readContactsFromFile(FILE** spFile, Contact contacts[]) {
 	// File opened in append / update mode, rewind so that we can read data from file.
 	rewind(*spFile);
 
+	// FIXME: Look into doing this with fgets, for example see getString()
 	while (fscanf(
 			*spFile,
 			"%u %[^\n] %[^\n] %u %[^\n] %[^\n] %[^\n] %u %lu %[^\n]",
@@ -326,7 +351,7 @@ void readContactsFromFile(FILE** spFile, Contact contacts[]) {
 	}
 } // end function readContactsFromFile
 
-/*
+/* TODO: Incomplete documentation.
  * Name:			setID()
  * Parameters:		None.
  * Processes:		Set the ID for a new contact.

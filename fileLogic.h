@@ -113,6 +113,7 @@ void saveAndExit(String fileName, Contact contacts[]) {
  * Return Value:	None.
  */
 void writeToFile(Contact contacts[], FILE** spFile) {
+	// TODO: Run in debugger to ensure it is functioning properly.
 	for (int contact = 0; contact < MAX_NUMBER_OF_CONTACTS; contact++) {
 		if (contacts[contact].id != 0) {
 			fprintf(

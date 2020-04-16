@@ -3,12 +3,12 @@
 - [x] Open or create the contacts file.
 - [x] Read / write from / to the contacts file.
 - [x] Close the contacts file.
-- [ ] Create contacts.
+- [x] Create contacts.
 - [x] Retrieve contacts.
 - [ ] Search for a contact or contacts.
 - [ ] Update a contact.
 - [ ] Delete a contact.
-- [ ] Save changes on exit.
+- [x] Save changes on exit.
 
 #### Instructions
 Following the Code Conventions and using good programming design and practices, appropriate data types, validation, etc., create an address book application, which uses a struct defined as a user-defined data type. Feel free to incorporate the various concepts covered in Chapters 1 - 13 as needed.

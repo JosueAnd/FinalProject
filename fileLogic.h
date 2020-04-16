@@ -11,10 +11,15 @@
 #ifndef FINALPROJECT_FILELOGIC_H
 
 #include <bits/types/FILE.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "definitions.h"
+
+// Prototypes
+void closeContactsFile(FILE** spFile);
+void openContactsFile(String fileName, FILE** spFile);
+void readContactsFromFile(FILE** spFile, Contact contacts[]);
 
 /*
  * Name:			closeContactsFile()

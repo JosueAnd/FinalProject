@@ -4,15 +4,17 @@
 
 #ifndef FINALPROJECT_GETTERS_H
 
+#include <ctype.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 #include <string.h>
-#include <ctype.h>
 
-#include "contact.h"
 #include "definitions.h"
 #include "ui.h"
+
+// Prototypes
+void getString(String string);
 
 /*
  * Name:			getString()
@@ -54,62 +56,6 @@ void getString(String string) {
 	// Assigning user input to passed in field.
 	strcpy(string, input);
 } // end function getString
-
-/* TODO: Incomplete documentation.
- * Name:			getUserChoice()
- * Parameters:		contacts[]		The array where contacts are stored upon application start.
- * Processes:		Get an integer choice matching a menu option and call appropriate functions
- * 					to carry out that process.
- * Return Value:	An integer representing the users choice to continue interacting with the
- * 					program (non-zero value) or terminate its use (zero).
- */
-bool getUserChoice(Contact contacts[]) {
-	// Variables
-	char inStr = 0;
-	unsigned int choice = 0;
-	bool sentinel = true;
-
-	printf("Choice: ");
-	scanf("%s", &inStr);
-	choice = strtoul(&inStr, NULL, 0);
-
-	// Call the appropriate function for the chosen menu option.
-	switch(choice) {
-		case 1:
-			createContact(contacts);
-			break;
-		case 2:
-			printAllContacts(contacts);
-			break;
-			// FIXME: Incomplete switch logic.
-//		case 3:
-//			use strstr(haystack, needle) to find portion and return it
-//			printf("");
-//			break;
-//		case 4:
-//			printf("");
-//			break;
-//		case 5:
-//			printf("");
-//			break;
-		case 6:
-			printf("\n\nYou have chosen to exit. Good bye! :)\n\n");
-			sentinel = false;
-			break;
-		default:
-			// Display message to use warning of invalid choice.
-			printf("\n**********\n\n");
-			printf("\tInvalid option chosen. Please try again entering the number to the "
-				   "left of the option in the displayed menu.");
-			printf("\n\n**********\n");
-			// Reprint the menu.
-			printMenu();
-			// Catch the return value of the recurred function for continuance or exit condition.
-			sentinel = getUserChoice(contacts);
-			break;
-	} // end switch
-	return sentinel;
-} // end function getUserChoice
 
 #define FINALPROJECT_GETTERS_H
 #endif //FINALPROJECT_GETTERS_H

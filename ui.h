@@ -6,6 +6,10 @@
 
 #include <stdio.h>
 
+// Prototypes
+void printMenu();
+void printWelcome();
+
 /*
  * Name:			printMenu()
  * Parameters:		None.

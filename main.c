@@ -12,6 +12,8 @@
 #include <stdio.h>
 #include <string.h>
 
+// Contact Manipulation Functions
+#include "contact.h"
 // Macros and User-Defined Types
 #include "definitions.h"
 // FILE Functions

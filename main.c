@@ -15,35 +15,16 @@
 #include <string.h>
 #include <ctype.h>
 
-// Macros
-#define MAX_STRING_LENGTH 50
-#define MAX_NUMBER_OF_CONTACTS 250
-
-// User Defined Types
-typedef char String[MAX_STRING_LENGTH];
-typedef struct {
-	unsigned int id;
-	String firstName;
-	String lastName;
-	unsigned int houseNumber;
-	String streetName;
-	String city;
-	String state;
-	unsigned int zip;
-	unsigned long int phoneNumber;
-	String email;
-} Contact;
+#include "definitions.h"
+#include "fileLogic.h"
 
 // Prototypes
-void closeContactsFile(FILE**);
 void createContact(Contact[]);
 void getString(String string);
 bool getUserChoice(Contact[]);
-void openContactsFile(String, FILE**);
 void printAllContacts(Contact[]);
 void printMenu();
 void printWelcome();
-void readContactsFromFile(FILE**, Contact[]);
 int setID(Contact[]);
 
 /*
@@ -59,15 +40,15 @@ int main() {
 	Contact contacts[MAX_NUMBER_OF_CONTACTS] = {0};
 
 	// Open the file, retrieve contact information and close file.
-//	openContactsFile("contacts.txt", &spContacts);
-//	readContactsFromFile(&spContacts, contacts);
-//	closeContactsFile(&spContacts);
-//
-//	// User interaction
-//	printWelcome();
-//	do {
-//		printMenu();
-//	} while(getUserChoice(contacts));
+	openContactsFile("contacts.txt", &spContacts);
+	readContactsFromFile(&spContacts, contacts);
+	closeContactsFile(&spContacts);
+
+	// User interaction
+	printWelcome();
+	do {
+		printMenu();
+	} while(getUserChoice(contacts));
 
 	return 0;
 } // end function main
@@ -116,22 +97,6 @@ void createContact(Contact contacts[]) {
 	// Adding contact to contacts array, index is always ID - 1.
 	contacts[contact.id - 1] = contact;
 } // end function createContact
-
-/*
- * Name:			closeContactsFile()
- * Parameters:		spFile		The place where the contacts file to be closed is stored.
- * Processes:		Close an open contacts file.
- * Return Value:	None.
- */
-void closeContactsFile(FILE** spFile) {
-	// Calculation, closing a file
-	if (fclose(*spFile) == EOF) {
-		printf("\n**********\n\n");
-		printf("\tError occurred while closing the file.");
-		printf("\n\n**********\n");
-		exit(101);
-	} // end if
-} // end function closeContactsFile
 
 /*
  * Name:			getString()
@@ -230,23 +195,6 @@ bool getUserChoice(Contact contacts[]) {
 	return sentinel;
 } // end function getUserChoice
 
-/*
- * Name:			openContactsFile()
- * Parameters:		fileName	A string representing the name of the file to be opened.
- * 					spFile		The place where the opened contacts file will stored.
- * Processes:		Open or create the contacts file in append mode.
- * Return Value:	None.
- */
-void openContactsFile(String fileName, FILE** spFile) {
-	// Calculation, opening the contacts.txt file
-	if ((*spFile = fopen(fileName, "a+")) == NULL) {
-		printf("\n**********\n\n");
-		printf("\tError occurred while opening the contacts.txt file.");
-		printf("\n\n**********\n");
-		exit(100);
-	} // end if
-} // end function openContactsFile
-
 /* TODO: Incomplete documentation.
  * Name:			printAllContacts()
  * Parameters:		contacts
@@ -315,41 +263,6 @@ void printWelcome() {
 	printf("|                        Welcome to the Contact Book                       |\n");
 	printf("|                                                                          |\n");
 } // end function printWelcome
-
-/*
- * Name:			readContactsFromFile()
- * Parameters:		file		The file where contact information is stored.
- * 					contacts	The array where contacts are stored upon application start.
- * Processes:		Read all contacts from a file and store them into an array.
- * Return Value:	None.
- */
-void readContactsFromFile(FILE** spFile, Contact contacts[]) {
-	// Variables
-	Contact contact = {0};
-	int numOfContacts = 0;
-
-	// File opened in append / update mode, rewind so that we can read data from file.
-	rewind(*spFile);
-
-	// FIXME: Look into doing this with fgets, for example see getString()
-	while (fscanf(
-			*spFile,
-			"%u %[^\n] %[^\n] %u %[^\n] %[^\n] %[^\n] %u %lu %[^\n]",
-			&contact.id,
-			contact.firstName,
-			contact.lastName,
-			&contact.houseNumber,
-			contact.streetName,
-			contact.city,
-			contact.state,
-			&contact.zip,
-			&contact.phoneNumber,
-			contact.email
-			) == 10) {
-		contacts[numOfContacts] = contact;
-		numOfContacts += 1;
-	}
-} // end function readContactsFromFile
 
 /* TODO: Incomplete documentation.
  * Name:			setID()

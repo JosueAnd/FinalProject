@@ -17,9 +17,11 @@
 #include "definitions.h"
 
 // Prototypes
-void closeContactsFile(FILE** spFile);
-void openContactsFile(String fileName, FILE** spFile);
-void readContactsFromFile(FILE** spFile, Contact contacts[]);
+void closeContactsFile(FILE**);
+void openContactsFile(String, FILE**);
+void readContactsFromFile(FILE**, Contact[]);
+void saveAndExit(String, Contact[]);
+void writeToFile(Contact[], FILE**);
 
 /*
  * Name:			closeContactsFile()
@@ -88,6 +90,48 @@ void readContactsFromFile(FILE** spFile, Contact contacts[]) {
 		numOfContacts += 1;
 	}
 } // end function readContactsFromFile
+
+/* TODO: Incomplete documentation.
+ * Name:			saveAndExit()
+ * Parameters:		None.
+ * Processes:		None.
+ * Return Value:	None.
+ */
+void saveAndExit(String fileName, Contact contacts[]) {
+	FILE* contactsFile = NULL;
+	// Open the file.
+	openContactsFile(fileName, &contactsFile);
+	rewind(contactsFile);
+	writeToFile(contacts, &contactsFile);
+	closeContactsFile(&contactsFile);
+}
+
+/* TODO: Incomplete documentation.
+ * Name:			writeToFile()
+ * Parameters:		None.
+ * Processes:		None.
+ * Return Value:	None.
+ */
+void writeToFile(Contact contacts[], FILE** spFile) {
+	for (int contact = 0; contact < MAX_NUMBER_OF_CONTACTS; contact++) {
+		if (contacts[contact].id != 0) {
+			fprintf(
+					*spFile,
+					"%u\n%s\n%s\n%u\n%s\n%s\n%s\n%u\n%lu\n%s\n",
+					contacts[contact].id,
+					contacts[contact].firstName,
+					contacts[contact].lastName,
+					contacts[contact].houseNumber,
+					contacts[contact].streetName,
+					contacts[contact].city,
+					contacts[contact].state,
+					contacts[contact].zip,
+					contacts[contact].phoneNumber,
+					contacts[contact].email
+			);
+		}
+	}
+}
 
 #define FINALPROJECT_FILELOGIC_H
 #endif //FINALPROJECT_FILELOGIC_H

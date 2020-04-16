@@ -12,7 +12,6 @@
 
 // Prototypes
 void createContact(Contact contacts[]);
-bool getUserChoice(Contact contacts[]);
 void printAllContacts(Contact contacts[]);
 int setID(Contact contacts[]);
 
@@ -37,7 +36,7 @@ void createContact(Contact contacts[]) {
 	getString(contact.lastName);
 
 	printf("Please enter the house number of the contact: ");
-	//getInt(contact.houseNumber);
+	getInt(contact.houseNumber);
 
 	printf("Please enter the street name the contact lives at: ");
 	getString(contact.streetName);
@@ -49,10 +48,10 @@ void createContact(Contact contacts[]) {
 	getString(contact.state);
 
 	printf("Please enter the contact's zip code: ");
-	//getInt(contact.zip);
+	getInt(contact.zip);
 
 	printf("Please enter the contact's phone number: ");
-	//getInt(contact.phoneNumber);
+	getInt(contact.phoneNumber);
 
 	printf("Please enter the contact's email: ");
 	getString(contact.email);
@@ -60,62 +59,6 @@ void createContact(Contact contacts[]) {
 	// Adding contact to contacts array, index is always ID - 1.
 	contacts[contact.id - 1] = contact;
 } // end function createContact
-
-/* TODO: Incomplete documentation.
- * Name:			getUserChoice()
- * Parameters:		contacts[]		The array where contacts are stored upon application start.
- * Processes:		Get an integer choice matching a menu option and call appropriate functions
- * 					to carry out that process.
- * Return Value:	An integer representing the users choice to continue interacting with the
- * 					program (non-zero value) or terminate its use (zero).
- */
-bool getUserChoice(Contact contacts[]) {
-	// Variables
-	char inStr = 0;
-	unsigned int choice = 0;
-	bool sentinel = true;
-
-	printf("Choice: ");
-	scanf("%s", &inStr);
-	choice = strtoul(&inStr, NULL, 0);
-
-	// Call the appropriate function for the chosen menu option.
-	switch(choice) {
-		case 1:
-			createContact(contacts);
-			break;
-		case 2:
-			printAllContacts(contacts);
-			break;
-			// FIXME: Incomplete switch logic.
-//		case 3:
-//			use strstr(haystack, needle) to find portion and return it
-//			printf("");
-//			break;
-//		case 4:
-//			printf("");
-//			break;
-//		case 5:
-//			printf("");
-//			break;
-		case 6:
-			printf("\n\nYou have chosen to exit. Good bye! :)\n\n");
-			sentinel = false;
-			break;
-		default:
-			// Display message to use warning of invalid choice.
-			printf("\n**********\n\n");
-			printf("\tInvalid option chosen. Please try again entering the number to the "
-				   "left of the option in the displayed menu.");
-			printf("\n\n**********\n");
-			// Reprint the menu.
-			printMenu();
-			// Catch the return value of the recurred function for continuance or exit condition.
-			sentinel = getUserChoice(contacts);
-			break;
-	} // end switch
-	return sentinel;
-} // end function getUserChoice
 
 /* TODO: Incomplete documentation.
  * Name:			printAllContacts()

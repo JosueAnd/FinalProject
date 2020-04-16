@@ -36,7 +36,7 @@ void createContact(Contact contacts[]) {
 	getString(contact.lastName);
 
 	printf("Please enter the house number of the contact: ");
-	getInt(contact.houseNumber);
+	contact.houseNumber = getInt();
 
 	printf("Please enter the street name the contact lives at: ");
 	getString(contact.streetName);
@@ -48,10 +48,10 @@ void createContact(Contact contacts[]) {
 	getString(contact.state);
 
 	printf("Please enter the contact's zip code: ");
-	getInt(contact.zip);
+	contact.zip = getInt();
 
 	printf("Please enter the contact's phone number: ");
-	getInt(contact.phoneNumber);
+	contact.phoneNumber = getInt();
 
 	printf("Please enter the contact's email: ");
 	getString(contact.email);

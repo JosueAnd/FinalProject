@@ -13,7 +13,7 @@
 #include "definitions.h"
 
 // Prototypes
-void getInt(unsigned int);
+unsigned int getInt();
 void getString(String string);
 
 /*
@@ -23,7 +23,7 @@ void getString(String string);
  * 					will loop, prompting for input until validation passes.
  * Return Value:	None.
  */
-void getInt(unsigned int integer) {
+unsigned int getInt() {
 	// Variables
 	String input = "";
 	bool errorFlag = false;
@@ -53,7 +53,7 @@ void getInt(unsigned int integer) {
 	} while (errorFlag);
 
 	// Assigning user input to passed in field.
-	strcpy(integer, input);
+	return strtol(input, NULL, 0);
 } // end function getString
 
 /*

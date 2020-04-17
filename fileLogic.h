@@ -58,7 +58,7 @@ void openContactsFile(String fileName, FILE** spFile) {
 
 /*
  * Name:			readContactsFromFile()
- * Parameters:		file		The file where contact information is stored.
+ * Parameters:		spFile			The file where contact information is stored.
  * 					contacts[]		The array where contacts are stored upon application start.
  * Processes:		Read all contacts from a file and store them into an array.
  * Return Value:	None.
@@ -91,10 +91,12 @@ void readContactsFromFile(Contact contacts[], FILE** spFile) {
 	}
 } // end function readContactsFromFile
 
-/* TODO: Incomplete documentation.
+/*
  * Name:			saveAndExit()
- * Parameters:		None.
- * Processes:		None.
+ * Parameters:		contacts[]		The array where contacts are stored upon application start.
+ * 					fileName		A string representing the name of the file to be opened.
+ * Processes:		Open the contacts file, prepare for writing, write contacts to the file and
+ * 					close.
  * Return Value:	None.
  */
 void saveAndExit(Contact contacts[], String fileName) {
@@ -106,10 +108,12 @@ void saveAndExit(Contact contacts[], String fileName) {
 	closeContactsFile(&contactsFile);
 }
 
-/* TODO: Incomplete documentation.
+/*
  * Name:			writeToFile()
  * Parameters:		contacts[]		The array where contacts are stored upon application start.
- * Processes:		None.
+ * 					spFile			The place where the opened contacts file will stored.
+ * Processes:		Write contacts to the file, resetting index numbers here to prevent the need
+ * 					to refactor contacts on delete operations.
  * Return Value:	None.
  */
 void writeToFile(Contact contacts[], FILE** spFile) {

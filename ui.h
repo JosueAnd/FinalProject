@@ -13,7 +13,7 @@ bool getUserChoice(Contact contacts[]);
 void printMenu();
 void printWelcome();
 
-/* TODO: Incomplete documentation.
+/*
  * Name:			getUserChoice()
  * Parameters:		contacts[]		The array where contacts are stored upon application start.
  * Processes:		Get an integer choice matching a menu option and call appropriate functions
@@ -28,8 +28,7 @@ bool getUserChoice(Contact contacts[]) {
 	bool sentinel = true;
 
 	printf("Choice: ");
-	scanf("%s", &inStr);
-	choice = strtoul(&inStr, NULL, 0);
+	choice = getInt();
 
 	// Call the appropriate function for the chosen menu option.
 	switch(choice) {

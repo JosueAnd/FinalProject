@@ -16,6 +16,7 @@
 
 // User Defined Types
 typedef char String[MAX_STRING_LENGTH];
+
 typedef struct {
 	unsigned int id;
 	String firstName;

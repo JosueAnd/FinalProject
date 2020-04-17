@@ -17,11 +17,11 @@ unsigned int getInt();
 void getString(String string);
 
 /*
- * Name:			getString()
- * Parameters:		string		The String where user input will be stored.
+ * Name:			getInt()
+ * Parameters:		None.
  * Processes:		Accepts input from the user and validates. If validation fails the function
  * 					will loop, prompting for input until validation passes.
- * Return Value:	None.
+ * Return Value:	An integer chosen by the application user.
  */
 unsigned int getInt() {
 	// Variables
@@ -38,15 +38,19 @@ unsigned int getInt() {
 
 		// Validating input.
 		for (unsigned long length = strlen(input); length; length--) {
-			if (!(isdigit(input[length - 1])) ||
+			if (!(isdigit(input[length - 1]) ||
+				input[length - 1] == '\n') ||
 				errorFlag) {
 				errorFlag = true;
 				printf("\n**********\n\n");
 				printf("\tError: Invalid characters entered.");
-				printf("\t\tPlease try again, but with only numbers  - 9.");
+				printf("\t\tPlease try again, but with only numbers 1 - 9.");
 				printf("\n\n**********\n");
 				break;
 			} else {
+				if (input[length - 1] == '\n') {
+					input[length - 1] = '\0';
+				}
 				errorFlag = false;
 			}
 		} // end for loop
@@ -88,6 +92,8 @@ void getString(String string) {
 				printf("\n\n**********\n");
 				break;
 			} else {
+				if (input[length - 1] == '\n')
+					input[length - 1] = '\0';
 				errorFlag = false;
 			}
 		} // end for loop

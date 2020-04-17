@@ -60,19 +60,20 @@ void createContact(Contact contacts[]) {
 	contacts[contact.id - 1] = contact;
 } // end function createContact
 
-/* TODO: Incomplete documentation.
+/*
  * Name:			printAllContacts()
  * Parameters:		contacts[]		The array where contacts are stored upon application start.
- * Processes:		None.
+ * Processes:		Prints all contacts and information from the contact book.
  * Return Value:	None.
  */
 void printAllContacts(Contact contacts[]) {
-	// FIXME: Output format should match welcome and menu.
 	for (int index = 0; index < MAX_NUMBER_OF_CONTACTS; index++) {
 		if (contacts[index].id != 0) {
+			printf
+			("\n============================================================================");
 			// Print name.
 			printf(
-					"Name: %s %s\n",
+					"\n\nName: %s %s\n",
 					contacts[index].firstName,
 					contacts[index].lastName
 			);
@@ -91,8 +92,8 @@ void printAllContacts(Contact contacts[]) {
 					contacts[index].phoneNumber,
 					contacts[index].email
 			);
-		}
-	}
+		} // end if
+	} // end for
 } // end function printAllContacts
 
 /*

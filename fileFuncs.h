@@ -17,7 +17,7 @@
 
 // Prototypes
 void closeContactsFile(FILE**);
-void openContactsFile(String, FILE**);
+void openContactsFile(String, FILE**, String);
 void readContactsFromFile(Contact[], FILE**);
 void saveAndExit(Contact[], String);
 void writeToFile(Contact[], FILE**);
@@ -45,9 +45,9 @@ void closeContactsFile(FILE** spFile) {
  * Processes:		Open or create the contacts file in append mode.
  * Return Value:	None.
  */
-void openContactsFile(String fileName, FILE** spFile) {
+void openContactsFile(String fileName, FILE** spFile, String mode) {
 	// Calculation, opening the contacts.txt file
-	if ((*spFile = fopen(fileName, "a+")) == NULL) {
+	if ((*spFile = fopen(fileName, mode)) == NULL) {
 		printf("\n**********\n\n");
 		printf("\tError occurred while opening the contacts.txt file.");
 		printf("\n\n**********\n");
@@ -66,9 +66,6 @@ void readContactsFromFile(Contact contacts[], FILE** spFile) {
 	// Variables
 	Contact contact = {0};
 	int numOfContacts = 0;
-
-	// File opened in append / update mode, rewind so that we can read data from file.
-	rewind(*spFile);
 
 	// FIXME: Look into doing this with fgets, for example see getString()
 	while (fscanf(
@@ -100,9 +97,7 @@ void readContactsFromFile(Contact contacts[], FILE** spFile) {
  */
 void saveAndExit(Contact contacts[], String fileName) {
 	FILE* contactsFile = NULL;
-	// Open the file.
-	openContactsFile(fileName, &contactsFile);
-	rewind(contactsFile);
+	openContactsFile(fileName, &contactsFile, "w");
 	writeToFile(contacts, &contactsFile);
 	closeContactsFile(&contactsFile);
 }

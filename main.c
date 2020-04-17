@@ -37,7 +37,7 @@ int main() {
 	Contact contacts[MAX_NUMBER_OF_CONTACTS] = {0};
 
 	// Open the file, retrieve contact information and close file.
-	openContactsFile("contacts.txt", &spContacts);
+	openContactsFile("contacts.txt", &spContacts, "r");
 	readContactsFromFile(contacts, &spContacts);
 	closeContactsFile(&spContacts);
 

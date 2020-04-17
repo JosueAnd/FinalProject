@@ -19,8 +19,8 @@
 // Prototypes
 void closeContactsFile(FILE**);
 void openContactsFile(String, FILE**);
-void readContactsFromFile(FILE**, Contact[]);
-void saveAndExit(String, Contact[]);
+void readContactsFromFile(Contact[], FILE**);
+void saveAndExit(Contact[], String);
 void writeToFile(Contact[], FILE**);
 
 /*
@@ -59,11 +59,11 @@ void openContactsFile(String fileName, FILE** spFile) {
 /*
  * Name:			readContactsFromFile()
  * Parameters:		file		The file where contact information is stored.
- * 					contacts	The array where contacts are stored upon application start.
+ * 					contacts[]		The array where contacts are stored upon application start.
  * Processes:		Read all contacts from a file and store them into an array.
  * Return Value:	None.
  */
-void readContactsFromFile(FILE** spFile, Contact contacts[]) {
+void readContactsFromFile(Contact contacts[], FILE** spFile) {
 	// Variables
 	Contact contact = {0};
 	int numOfContacts = 0;
@@ -97,7 +97,7 @@ void readContactsFromFile(FILE** spFile, Contact contacts[]) {
  * Processes:		None.
  * Return Value:	None.
  */
-void saveAndExit(String fileName, Contact contacts[]) {
+void saveAndExit(Contact contacts[], String fileName) {
 	FILE* contactsFile = NULL;
 	// Open the file.
 	openContactsFile(fileName, &contactsFile);
@@ -108,18 +108,17 @@ void saveAndExit(String fileName, Contact contacts[]) {
 
 /* TODO: Incomplete documentation.
  * Name:			writeToFile()
- * Parameters:		None.
+ * Parameters:		contacts[]		The array where contacts are stored upon application start.
  * Processes:		None.
  * Return Value:	None.
  */
 void writeToFile(Contact contacts[], FILE** spFile) {
-	// TODO: Run in debugger to ensure it is functioning properly.
-	for (int contact = 0; contact < MAX_NUMBER_OF_CONTACTS; contact++) {
+	for (int contact = 0, index = 1; contact < MAX_NUMBER_OF_CONTACTS; contact++) {
 		if (contacts[contact].id != 0) {
 			fprintf(
 					*spFile,
 					"%u\n%s\n%s\n%u\n%s\n%s\n%s\n%u\n%lu\n%s\n",
-					contacts[contact].id,
+					index,
 					contacts[contact].firstName,
 					contacts[contact].lastName,
 					contacts[contact].houseNumber,
@@ -130,6 +129,8 @@ void writeToFile(Contact contacts[], FILE** spFile) {
 					contacts[contact].phoneNumber,
 					contacts[contact].email
 			);
+			// Circumvent need for cascading ID changes during operation (delete operations).
+			index += 1;
 		}
 	}
 }

@@ -62,7 +62,7 @@ void createContact(Contact contacts[]) {
 
 /* TODO: Incomplete documentation.
  * Name:			printAllContacts()
- * Parameters:		contacts
+ * Parameters:		contacts[]		The array where contacts are stored upon application start.
  * Processes:		None.
  * Return Value:	None.
  */
@@ -94,9 +94,9 @@ void printAllContacts(Contact contacts[]) {
 	}
 } // end function printAllContacts
 
-/* TODO: Incomplete documentation.
+/*
  * Name:			setID()
- * Parameters:		None.
+ * Parameters:		contacts[]		The array where contacts are stored upon application start.
  * Processes:		Set the ID for a new contact.
  * Return Value:	An integer value to be used as a new Contact's ID.
  */

@@ -67,6 +67,7 @@ void createContact(Contact contacts[]) {
  * Return Value:	None.
  */
 void printAllContacts(Contact contacts[]) {
+	// FIXME: Output format should match welcome and menu.
 	for (int index = 0; index < MAX_NUMBER_OF_CONTACTS; index++) {
 		if (contacts[index].id != 0) {
 			// Print name.

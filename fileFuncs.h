@@ -8,9 +8,8 @@
  * Date:
  */
 
-#ifndef FINALPROJECT_FILELOGIC_H
+#ifndef FINALPROJECT_FILEFUNCS_H
 
-#include <bits/types/FILE.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -139,5 +138,5 @@ void writeToFile(Contact contacts[], FILE** spFile) {
 	}
 }
 
-#define FINALPROJECT_FILELOGIC_H
-#endif //FINALPROJECT_FILELOGIC_H
+#define FINALPROJECT_FILEFUNCS_H
+#endif //FINALPROJECT_FILEFUNCS_H

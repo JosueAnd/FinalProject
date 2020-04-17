@@ -10,14 +10,13 @@
 
 // Preprocessor Directives
 #include <stdio.h>
-#include <string.h>
 
 // Contact Manipulation Functions
 #include "contact.h"
 // Macros and User-Defined Types
 #include "definitions.h"
 // FILE Functions
-#include "fileLogic.h"
+#include "fileFuncs.h"
 // User Input Functions
 #include "getters.h"
 // UI Functions
@@ -34,7 +33,7 @@
  */
 int main() {
 	// Variables
-	FILE* spContacts = NULL;
+	FILE* spContacts;
 	Contact contacts[MAX_NUMBER_OF_CONTACTS] = {0};
 
 	// Open the file, retrieve contact information and close file.

@@ -13,9 +13,10 @@
 #include "definitions.h"
 
 // Prototypes
-void getEmail(String string);
+void getEmail(String);
 unsigned int getInt();
-void getString(String string);
+void getString(String);
+void toLower(String, const String);
 /*
  * Name:			getEmail()
  * Parameters:		string		The String where user input will be stored.
@@ -47,6 +48,7 @@ void getEmail(String string) {
 				printf("\tError: Invalid characters entered.");
 				printf("\t\tPlease try again, but with only letters A - Z or a - z.");
 				printf("\n\n**********\n");
+				printf("\nNew Attempt: ");
 				break;
 			} else {
 				if (input[length - 1] == '\n')
@@ -90,6 +92,7 @@ unsigned int getInt() {
 				printf("\tError: Invalid characters entered.");
 				printf("\t\tPlease try again, but with only numbers 1 - 9.");
 				printf("\n\n**********\n");
+				printf("\nNew Attempt: ");
 				break;
 			} else {
 				if (input[length - 1] == '\n') {
@@ -134,6 +137,7 @@ void getString(String string) {
 				printf("\tError: Invalid characters entered.");
 				printf("\t\tPlease try again, but with only letters A - Z or a - z.");
 				printf("\n\n**********\n");
+				printf("\nNew Attempt: ");
 				break;
 			} else {
 				if (input[length - 1] == '\n')
@@ -146,6 +150,22 @@ void getString(String string) {
 	// Assigning user input to passed in field.
 	strcpy(string, input);
 } // end function getString
+
+/* TODO: Incomplete documentation.
+ * Name:			toLower()
+ * Parameters:		None.
+ * Processes:		None.
+ * Return Value:	None.
+ */
+void toLower(String copy, const String original) {
+	for (int character = 0; original[character] != '\0' && original[character] != '\n'; character++) {
+		if (original[character] >= 'A' && original[character] <= 'Z') {
+			copy[character] = original[character] + 32;
+		} else {
+			copy[character] = original[character];
+		}
+	}
+} // end function toLower
 
 #define FINALPROJECT_GETTERS_H
 #endif //FINALPROJECT_GETTERS_H

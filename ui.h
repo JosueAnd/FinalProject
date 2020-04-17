@@ -7,6 +7,7 @@
 #include <stdio.h>
 
 #include "contact.h"
+#include "definitions.h"
 
 // Prototypes
 bool getUserChoice(Contact contacts[]);
@@ -38,11 +39,10 @@ bool getUserChoice(Contact contacts[]) {
 		case 2:
 			printAllContacts(contacts);
 			break;
-			// FIXME: Incomplete switch logic.
-//		case 3:
-//			use strstr(haystack, needle) to find portion and return it
-//			printf("");
-//			break;
+		case 3:
+			searchContacts(contacts);
+			break;
+		// FIXME: Incomplete switch logic.
 //		case 4:
 //			printf("");
 //			break;

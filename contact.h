@@ -13,6 +13,7 @@
 // Prototypes
 void createContact(Contact contacts[]);
 void printAllContacts(Contact contacts[]);
+void searchContacts(Contact contacts[]);
 int setID(Contact contacts[]);
 
 /*
@@ -23,41 +24,38 @@ int setID(Contact contacts[]);
  */
 void createContact(Contact contacts[]) {
 	// Variables
-	Contact contact = {0};
+	Contact* contact = &contacts[setID(contacts) - 1];
 
-	// ID is auto set as last known ID + 1.
-	contact.id = setID(contacts);
+	// ID is auto set as last known ID + 1. The + 1 is accounted for in setID.
+	contact -> id = setID(contacts);
 
 	// Getting all other fields as input from user.
 	printf("Please enter the first name of the contact: ");
-	getString(contact.firstName);
+	getString(contact -> firstName);
 
 	printf("Please enter the last name of the contact: ");
-	getString(contact.lastName);
+	getString(contact -> lastName);
 
 	printf("Please enter the house number of the contact: ");
-	contact.houseNumber = getInt();
+	contact -> houseNumber = getInt();
 
 	printf("Please enter the street name the contact lives at: ");
-	getString(contact.streetName);
+	getString(contact -> streetName);
 
 	printf("Please enter the city the contact lives in: ");
-	getString(contact.city);
+	getString(contact -> city);
 
 	printf("Please enter the state the contact lives in: ");
-	getString(contact.state);
+	getString(contact -> state);
 
 	printf("Please enter the contact's zip code: ");
-	contact.zip = getInt();
+	contact -> zip = getInt();
 
 	printf("Please enter the contact's phone number: ");
-	contact.phoneNumber = getInt();
+	contact -> phoneNumber = getInt();
 
 	printf("Please enter the contact's email: ");
-	getEmail(contact.email);
-
-	// Adding contact to contacts array, index is always ID - 1.
-	contacts[contact.id - 1] = contact;
+	getEmail(contact -> email);
 } // end function createContact
 
 /*
@@ -68,7 +66,7 @@ void createContact(Contact contacts[]) {
  */
 void printAllContacts(Contact contacts[]) {
 	printf
-	("\n|                              All Contacts:                               |\n");
+	("\n|                                Contacts:                                 |\n");
 	for (int index = 0; index < MAX_NUMBER_OF_CONTACTS; index++) {
 		if (contacts[index].id != 0) {
 			printf
@@ -96,11 +94,55 @@ void printAllContacts(Contact contacts[]) {
 			);
 		} // end if
 	} // end for
-	printf
-	("\n============================================================================");
+	printf("\n============================================================================");
 	printf
 	("\n|                              End Contacts:                               |\n\n");
 } // end function printAllContacts
+
+/*
+ * Name:			searchContacts()
+ * Parameters:		contacts[]		The array where contacts are stored upon application start.
+ * Processes:		TODO: Add processes.
+ * Return Value:	TODO: Add return value.
+ */
+void searchContacts(Contact contacts[]) {
+	// Variables
+	Contact results[MAX_NUMBER_OF_CONTACTS] = {0};
+	Contact* pContact = NULL;
+	int numOfMatches = 0;
+	String searchCriteria = "";
+
+
+	printf("Please enter a name to search by (First or Last, not both): ");
+	getString(searchCriteria);
+
+	// Converting searchCriteria to lower case for comparison.
+	toLower(searchCriteria, searchCriteria);
+
+	// Searching through contacts for a match
+	for (int contact = 0; contact < MAX_NUMBER_OF_CONTACTS; contact++) {
+		pContact = &contacts[contact];
+		if (pContact -> id != 0) {
+			String tempFirstName = "";
+			String tempLastName = "";
+			toLower(tempFirstName, pContact -> firstName);
+			toLower(tempLastName, pContact -> lastName);
+			if (!(strstr(tempFirstName, searchCriteria) == NULL ||
+				strstr(tempLastName, searchCriteria) == NULL)) {
+				results[numOfMatches] = contacts[contact];
+				numOfMatches += 1;
+			} // end inner if
+		} // end outer if
+	} // end for
+
+	// Print contacts if at least one match was found, else notify of no matches.
+	if (numOfMatches > 0) {
+		printAllContacts(results);
+	} else {
+		printf
+		("\n|         Sorry, no contacts found matching your search criteria.          |\n");
+	}
+} // end function searchContacts
 
 /*
  * Name:			setID()

@@ -64,28 +64,70 @@ void openContactsFile(String fileName, FILE** spFile, String mode) {
  */
 void readContactsFromFile(Contact contacts[], FILE** spFile) {
 	// Variables
-	Contact contact = {0};
 	int numOfContacts = 0;
+	Contact* contact = &contacts[numOfContacts];
 
 	// TODO: Look into doing this with fgets, for example see getString()
 	while (fscanf(
 			*spFile,
 			"%u %[^\n] %[^\n] %u %[^\n] %[^\n] %[^\n] %u %lu %[^\n]",
-			&contact.id,
-			contact.firstName,
-			contact.lastName,
-			&contact.houseNumber,
-			contact.streetName,
-			contact.city,
-			contact.state,
-			&contact.zip,
-			&contact.phoneNumber,
-			contact.email
+			&contact -> id,
+			contact -> firstName,
+			contact -> lastName,
+			&contact -> houseNumber,
+			contact -> streetName,
+			contact -> city,
+			contact -> state,
+			&contact -> zip,
+			&contact -> phoneNumber,
+			contact -> email
 	) == 10) {
-		contacts[numOfContacts] = contact;
 		numOfContacts += 1;
+		contact = &contacts[numOfContacts];
 	}
 } // end function readContactsFromFile
+
+///*
+// * Name:			readContactsFromFile()
+// * Parameters:		spFile			The file where contact information is stored.
+// * 					contacts[]		The array where contacts are stored upon application start.
+// * Processes:		Read all contacts from a file and store them into an array.
+// * Return Value:	None.
+// */
+//void readContactsFromFile(Contact contacts[], FILE** spFile) {
+//	// Variables
+//	Contact contact = {0};
+//	int numOfContacts = 0;
+//
+//	// TODO: Look into doing this with fgets, for example see getString()
+//	while (fscanf(
+//			*spFile,
+//			"%u %[^\n] %[^\n] %u %[^\n] %[^\n] %[^\n] %u %lu %[^\n]",
+//			&contact.id,
+//			contact.firstName,
+//			contact.lastName,
+//			&contact.houseNumber,
+//			contact.streetName,
+//			contact.city,
+//			contact.state,
+//			&contact.zip,
+//			&contact.phoneNumber,
+//			contact.email
+//	) == 10) {
+//		contacts[numOfContacts] = contact;
+//		numOfContacts += 1;
+//	}
+//} // end function readContactsFromFile
+
+//void test(Contact contacts[], FILE** spFile) {
+//	do {
+//		String in = "";
+//		Contact contact = {0};
+//		contact.id = strtol(fgets(in, MAX_STRING_LENGTH, *spFile), NULL, 0);
+//		fgets(contact.firstName, MAX_STRING_LENGTH, *spFile);
+//		fgets(contact.lastName, MAX_STRING_LENGTH, *spFile);
+//	} while ();
+//}
 
 /*
  * Name:			saveAndExit()

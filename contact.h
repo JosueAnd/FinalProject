@@ -112,7 +112,6 @@ void searchContacts(Contact contacts[]) {
 	int numOfMatches = 0;
 	String searchCriteria = "";
 
-
 	printf("Please enter a name to search by (First or Last, not both): ");
 	getString(searchCriteria);
 
@@ -127,8 +126,8 @@ void searchContacts(Contact contacts[]) {
 			String tempLastName = "";
 			toLower(tempFirstName, pContact -> firstName);
 			toLower(tempLastName, pContact -> lastName);
-			if (!(strstr(tempFirstName, searchCriteria) == NULL ||
-				strstr(tempLastName, searchCriteria) == NULL)) {
+			if (strstr(tempFirstName, searchCriteria) ||
+				strstr(tempLastName, searchCriteria)) {
 				results[numOfMatches] = contacts[contact];
 				numOfMatches += 1;
 			} // end inner if

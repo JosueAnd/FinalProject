@@ -53,7 +53,7 @@ bool getUserChoice(Contact contacts[]) {
 		case 6:
 			printf("\n\nYou have chosen to exit. Good bye! :)\n\n");
 			sentinel = false;
-			saveAndExit("contacts.txt", contacts);
+			saveAndExit(contacts, "contacts.txt");
 			break;
 		default:
 			// Display message to use warning of invalid choice.

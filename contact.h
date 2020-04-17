@@ -54,7 +54,7 @@ void createContact(Contact contacts[]) {
 	contact.phoneNumber = getInt();
 
 	printf("Please enter the contact's email: ");
-	getString(contact.email);
+	getEmail(contact.email);
 
 	// Adding contact to contacts array, index is always ID - 1.
 	contacts[contact.id - 1] = contact;
@@ -67,10 +67,12 @@ void createContact(Contact contacts[]) {
  * Return Value:	None.
  */
 void printAllContacts(Contact contacts[]) {
+	printf
+	("\n|                              All Contacts:                               |\n");
 	for (int index = 0; index < MAX_NUMBER_OF_CONTACTS; index++) {
 		if (contacts[index].id != 0) {
 			printf
-			("\n============================================================================");
+			("============================================================================");
 			// Print name.
 			printf(
 					"\n\nName: %s %s\n",
@@ -94,6 +96,10 @@ void printAllContacts(Contact contacts[]) {
 			);
 		} // end if
 	} // end for
+	printf
+	("\n============================================================================");
+	printf
+	("\n|                              End Contacts:                               |\n\n");
 } // end function printAllContacts
 
 /*

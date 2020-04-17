@@ -67,7 +67,7 @@ void readContactsFromFile(Contact contacts[], FILE** spFile) {
 	Contact contact = {0};
 	int numOfContacts = 0;
 
-	// FIXME: Look into doing this with fgets, for example see getString()
+	// TODO: Look into doing this with fgets, for example see getString()
 	while (fscanf(
 			*spFile,
 			"%u %[^\n] %[^\n] %u %[^\n] %[^\n] %[^\n] %u %lu %[^\n]",

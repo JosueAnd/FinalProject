@@ -5,7 +5,7 @@
  * Facilitator:		David Stendel
  * Description:		A contact application with CRUD functionality.
  * Team Members:	Nathen Neel, Jacob Buettner and Joshua Andujar
- * Date:
+ * Date:			4/18/2020
  */
 
 // Preprocessor Directives
@@ -51,6 +51,7 @@ void readContactsFromFile(Contact[], FILE**);
 void saveAndExit(Contact[], String);
 void searchContacts(Contact[]);
 unsigned int setID(Contact[]);
+void sortAscending(Contact contacts[]);
 void toLower(String, const String);
 void updateContact(Contact[]);
 void writeToFile(Contact[], FILE**);
@@ -72,6 +73,8 @@ int main() {
 	openContactsFile("contacts.txt", &spContacts, "a+");
 	readContactsFromFile(contacts, &spContacts);
 	closeContactsFile(&spContacts);
+
+	sortAscending(contacts);
 
 	// User interaction
 	printWelcome();
@@ -604,6 +607,51 @@ unsigned int setID(Contact contacts[]) {
 
 	return greatestID + 1;
 } // end function setID
+
+void sortAscending(Contact contacts[]) {
+	// Sort
+	for (int contact = MAX_NUMBER_OF_CONTACTS; contact; contact--) {
+		if (contact - 2 >= 0) {
+			Contact *pContactTemp = {0};
+			Contact *pContact1 = &contacts[contact - 2];
+			Contact *pContact2 = &contacts[contact - 1];
+			if (strcmp(pContact1->firstName, pContact2->firstName) > 0) {
+				// Move pContact1 to pContactTemp
+				strcpy(pContactTemp->firstName, pContact1->firstName);
+				strcpy(pContactTemp->lastName, pContact1->lastName);
+				pContactTemp->houseNumber = pContact1->houseNumber;
+				strcpy(pContactTemp->streetName, pContact1->streetName);
+				strcpy(pContactTemp->city, pContact1->city);
+				strcpy(pContactTemp->state, pContact1->state);
+				pContactTemp->zip = pContact1->zip;
+				pContactTemp->phoneNumber = pContact1->phoneNumber;
+				strcpy(pContactTemp->email, pContact1->email);
+
+				// Move pContact2 to pContact1
+				strcpy(pContact1->firstName, pContact2->firstName);
+				strcpy(pContact1->lastName, pContact2->lastName);
+				pContact1->houseNumber = pContact2->houseNumber;
+				strcpy(pContact1->streetName, pContact2->streetName);
+				strcpy(pContact1->city, pContact2->city);
+				strcpy(pContact1->state, pContact2->state);
+				pContact1->zip = pContact2->zip;
+				pContact1->phoneNumber = pContact2->phoneNumber;
+				strcpy(pContact1->email, pContact2->email);
+
+				// Move pContactTemp to pContact2
+				strcpy(pContact2->firstName, pContactTemp->firstName);
+				strcpy(pContact2->lastName, pContactTemp->lastName);
+				pContact2->houseNumber = pContactTemp->houseNumber;
+				strcpy(pContact2->streetName, pContactTemp->streetName);
+				strcpy(pContact2->city, pContactTemp->city);
+				strcpy(pContact2->state, pContactTemp->state);
+				pContact2->zip = pContactTemp->zip;
+				pContact2->phoneNumber = pContactTemp->phoneNumber;
+				strcpy(pContact2->email, pContactTemp->email);
+			}
+		}
+	}
+} // end function sortAscending
 
 /*
  * Name:			toLower()

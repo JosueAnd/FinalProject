@@ -4,7 +4,7 @@
  * Course:			COP 2220C at Valencia College
  * Facilitator:		David Stendel
  * Description:		A contact application with CRUD functionality.
- * Team Members:	Nathen Neel and Joshua Andujar
+ * Team Members:	Nathen Neel, Jacob Buettner and Joshua Andujar
  * Date:
  */
 

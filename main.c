@@ -38,6 +38,7 @@ typedef struct {
 // Prototypes
 void closeContactsFile(FILE**);
 void createContact(Contact[]);
+void deleteContact(Contact[]);
 void getEmail(String);
 unsigned int getInt();
 void getString(String);
@@ -50,7 +51,7 @@ void printWelcome();
 void readContactsFromFile(Contact[], FILE**);
 void saveAndExit(Contact[], String);
 void searchContacts(Contact[]);
-int setID(Contact[]);
+unsigned int setID(Contact[]);
 void toLower(String, const String);
 void updateContact(Contact[]);
 void writeToFile(Contact[], FILE**);
@@ -139,6 +140,9 @@ void createContact(Contact contacts[]) {
 	printf("Please enter the contact's email: ");
 	getEmail(pContact -> email);
 } // end function createContact
+
+void deleteContact(Contact contacts[]) {
+}
 
 /*
  * Name:			getEmail()
@@ -571,25 +575,15 @@ void searchContacts(Contact contacts[]) {
  * Processes:		Set the ID for a new contact.
  * Return Value:	An integer value to be used as a new Contact's ID.
  */
-int setID(Contact contacts[]) {
+unsigned int setID(Contact contacts[]) {
 	// Variables
-	int greatestID = 0,
-			index = 0;
+	unsigned int greatestID = 0;
 
-	// FIXME: flawed logic, if you create a new contact after deleting the one at the first
-	//  	index, the ID assigned will be incorrect. Important because ID is used to determine
-	//  	index throughout the program.
-	if (contacts[index].id == 0) {
-		return 1;
-	} else {
-		// FIXME: flawed for similar reason as above, if a middle index is deleted, while loop
-		//  will stop and assign an improper ID.
-		while(contacts[index].id > greatestID) {
-			greatestID += 1;
-			index += 1;
-		}
-		return greatestID + 1;
+	for (int contact = 0; contact < MAX_NUMBER_OF_CONTACTS; contact++) {
+		greatestID = contacts[contact].id > greatestID ? contacts[contact].id : greatestID;
 	}
+
+	return greatestID + 1;
 } // end function setID
 
 /*
@@ -644,7 +638,7 @@ void updateContact(Contact contacts[]) {
 		printf("What about this contact do you want to update? Enter an option number from the "
 			   "menu above: ");
 
-		// Switch
+		// Switch on option number from printUpdateOptions().
 		switch (getInt()) {
 			case 1:
 				printf("Please enter the first name of the contact: ");

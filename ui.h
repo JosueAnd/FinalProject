@@ -37,15 +37,15 @@ bool getUserChoice(Contact contacts[]) {
 			createContact(contacts);
 			break;
 		case 2:
-			printAllContacts(contacts);
+			printAllContacts(contacts, 'v');
 			break;
 		case 3:
 			searchContacts(contacts);
 			break;
+		case 4:
+			updateContact(contacts);
+			break;
 		// FIXME: Incomplete switch logic.
-//		case 4:
-//			printf("");
-//			break;
 //		case 5:
 //			printf("");
 //			break;

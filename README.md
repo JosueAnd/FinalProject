@@ -6,7 +6,7 @@
 - [x] Create contacts.
 - [x] Retrieve contacts.
 - [x] Search for a contact or contacts.
-- [ ] Update a contact.
+- [x] Update a contact.
 - [ ] Delete a contact.
 - [x] Save changes on exit.
 

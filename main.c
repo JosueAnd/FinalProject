@@ -177,8 +177,9 @@ void getEmail(String string) {
 				break;
 			} else {
 				// Changing newline marker to string terminator.
-				if (input[length - 1] == '\n')
+				if (input[length - 1] == '\n') {
 					input[length - 1] = '\0';
+				}
 				errorFlag = false;
 			}
 		} // end for loop
@@ -272,12 +273,29 @@ void getString(String string) {
 				break;
 			} else {
 				// Changing newline marker to string terminator.
-				if (input[length - 1] == '\n')
+				if (input[length - 1] == '\n') {
 					input[length - 1] = '\0';
+				}
 				errorFlag = false;
 			}
 		} // end for loop
 	} while (errorFlag);
+
+	// Title Case the string
+	if (input[0] >= 'a' && input[0] <= 'z') {
+		input[0] = (char) (input[0] - 32);
+	}
+	for(unsigned long character = 1; character < strlen(input); character++) {
+		if (input[character] >= 'A' && input[character] <= 'Z') {
+			if (input[character - 1] != ' ') {
+				input[character] = (char) (input[character] + 32);
+			} // end inner if
+		} else {
+			if (input[character - 1] == ' ') {
+				input[character] = (char) (input[character] - 32);
+			}
+		} // end outer if / else
+	} // end for
 
 	// Assigning user input to passed in field.
 	strcpy(string, input);
@@ -604,7 +622,7 @@ void toLower(String copy, const String original) {
 			 * upper case equivalents, we can add 32 to an upper case character to get their
 			 * lower case equivalent.
 			 */
-			copy[character] = original[character] + 32;
+			copy[character] = (char) (original[character] + 32);
 		} else {
 			copy[character] = original[character];
 		}
@@ -678,6 +696,11 @@ void updateContact(Contact contacts[]) {
 				getEmail(pContact -> email);
 				break;
 			case 10:
+				/*
+				 * All contact related operations are based off of non-zero ID, so setting ID to
+				 * zero is sufficient to "delete" the contact. It will be ignored in any other
+				 * operation, to include writing to file.
+				 */
 				printf("\nContact \"%s %s\" has been deleted.\n\n", pContact -> firstName,
 						pContact -> lastName);
 				pContact -> id = 0;

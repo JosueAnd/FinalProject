@@ -153,7 +153,7 @@ void getEmail(String string) {
 	bool errorFlag = false;
 
 	do {
-		// Getting user input. FIXME: Allow no input for empty field, set to zero?
+		// Getting user input.
 		if (fgets(input, MAX_STRING_LENGTH, stdin) == NULL) {
 			errorFlag = true; // If no characters read in or error occurs, set errorFlag to true
 		} else {
@@ -162,6 +162,7 @@ void getEmail(String string) {
 
 		// Validating input.
 		for (unsigned long length = strlen(input); length; length--) {
+			// Checking if each character is an alphabetic, punctuation (@ or .) or space character.
 			if (!(isalpha(input[length - 1]) ||
 				  isspace(input[length - 1]) ||
 				  ispunct(input[length - 1])) ||
@@ -174,6 +175,7 @@ void getEmail(String string) {
 				printf("\nNew Attempt: ");
 				break;
 			} else {
+				// Changing newline marker to string terminator.
 				if (input[length - 1] == '\n')
 					input[length - 1] = '\0';
 				errorFlag = false;
@@ -197,8 +199,9 @@ unsigned int getInt() {
 	String input = "";
 	bool errorFlag = false;
 
+	// Calculation
 	do {
-		// Getting user input. FIXME: Allow no input for empty field, set to zero?
+		// Getting user input.
 		if (fgets(input, MAX_STRING_LENGTH, stdin) == NULL) {
 			errorFlag = true; // If no characters read in or error occurs, set errorFlag to true
 		} else {
@@ -207,6 +210,7 @@ unsigned int getInt() {
 
 		// Validating input.
 		for (unsigned long length = strlen(input); length; length--) {
+			// Checking if each character is a digit.
 			if (!(isdigit(input[length - 1]) ||
 				  input[length - 1] == '\n') ||
 				errorFlag) {
@@ -218,6 +222,7 @@ unsigned int getInt() {
 				printf("\nNew Attempt: ");
 				break;
 			} else {
+				// Changing newline marker to string terminator.
 				if (input[length - 1] == '\n') {
 					input[length - 1] = '\0';
 				}
@@ -240,10 +245,11 @@ unsigned int getInt() {
 void getString(String string) {
 	// Variables
 	String input = "";
-	bool errorFlag = false;
+	bool errorFlag = false; // Used to detect input error and prompt user for input again.
 
+	// Calculation
 	do {
-		// Getting user input. FIXME: Allow no input for empty field, set to zero?
+		// Getting user input.
 		if (fgets(input, MAX_STRING_LENGTH, stdin) == NULL) {
 			errorFlag = true; // If no characters read in or error occurs, set errorFlag to true
 		} else {
@@ -252,6 +258,7 @@ void getString(String string) {
 
 		// Validating input.
 		for (unsigned long length = strlen(input); length; length--) {
+			// Checking if each character is an alphabetic or space character.
 			if (!(isalpha(input[length - 1]) ||
 				  isspace(input[length - 1])) ||
 				errorFlag) {
@@ -263,6 +270,7 @@ void getString(String string) {
 				printf("\nNew Attempt: ");
 				break;
 			} else {
+				// Changing newline marker to string terminator.
 				if (input[length - 1] == '\n')
 					input[length - 1] = '\0';
 				errorFlag = false;
@@ -285,8 +293,9 @@ void getString(String string) {
 bool getUserChoice(Contact contacts[]) {
 	// Variables
 	unsigned int choice = 0;
-	bool sentinel = true;
+	bool sentinel = true; // Used in while loop in main.c to decide when to terminate the program.
 
+	// Getting user choice.
 	printf("Choice: ");
 	choice = getInt();
 
@@ -332,6 +341,7 @@ bool getUserChoice(Contact contacts[]) {
  * Name:			openContactsFile()
  * Parameters:		fileName	A string representing the name of the file to be opened.
  * 					spFile		The place where the opened contacts file will stored.
+ * 					mode		Mode to open the file in. Only modes of fopen() accepted here.
  * Processes:		Open or create the contacts file in append mode.
  * Return Value:	None.
  */
@@ -345,19 +355,21 @@ void openContactsFile(String fileName, FILE** spFile, String mode) {
 	} // end if
 } // end function openContactsFile
 
-/* TODO: Incomplete documentation.
+/*
  * Name:			printAllContacts()
  * Parameters:		contacts[]		The array where contacts are stored upon application start.
+ * 					mode			Mode of printing; v: View mode, display contact data, u:
+ * 									Update mode, display name and ID.
  * Processes:		Prints all contacts and information from the contact book.
  * Return Value:	None.
  */
 void printAllContacts(Contact contacts[], char mode) {
 	printf
-			("\n|                                Contacts:                                 |\n");
+	("\n|                                Contacts:                                 |\n");
 	for (int index = 0; index < MAX_NUMBER_OF_CONTACTS; index++) {
 		if (contacts[index].id != 0) {
 			printf
-					("============================================================================");
+			("============================================================================");
 			// Print name.
 			printf(
 					"\n\nName: %s %s\n",
@@ -387,7 +399,7 @@ void printAllContacts(Contact contacts[], char mode) {
 	} // end for
 	printf("============================================================================");
 	printf
-			("\n|                              End Contacts:                               |\n\n");
+	("\n|                              End Contacts:                               |\n\n");
 } // end function printAllContacts
 
 /*
@@ -452,8 +464,8 @@ void printWelcome() {
 
 /*
  * Name:			readContactsFromFile()
- * Parameters:		spFile			The file where contact information is stored.
- * 					contacts[]		The array where contacts are stored upon application start.
+ * Parameters:		contacts[]		The array where contacts are stored upon application start.
+ * 					spFile			The file where contact information is stored.
  * Processes:		Read all contacts from a file and store them into an array.
  * Return Value:	None.
  */
@@ -462,9 +474,9 @@ void readContactsFromFile(Contact contacts[], FILE** spFile) {
 	int numOfContacts = 0;
 	Contact* contact = &contacts[numOfContacts];
 
+	// Set the file for reading.
 	rewind(*spFile);
 
-	// TODO: Look into doing this with fgets, for example see getString()
 	while (fscanf(
 			*spFile,
 			"%u %[^\n] %[^\n] %u %[^\n] %[^\n] %[^\n] %u %lu %[^\n]",
@@ -493,7 +505,10 @@ void readContactsFromFile(Contact contacts[], FILE** spFile) {
  * Return Value:	None.
  */
 void saveAndExit(Contact contacts[], String fileName) {
+	// Variables
 	FILE* contactsFile = NULL;
+
+	// Open in write mode to overwrite previous contents and save only content in array.
 	openContactsFile(fileName, &contactsFile, "w");
 	writeToFile(contacts, &contactsFile);
 	closeContactsFile(&contactsFile);
@@ -502,8 +517,8 @@ void saveAndExit(Contact contacts[], String fileName) {
 /*
  * Name:			searchContacts()
  * Parameters:		contacts[]		The array where contacts are stored upon application start.
- * Processes:		TODO: Add processes.
- * Return Value:	TODO: Add return value.
+ * Processes:		Search contacts by first and last name based on user input.
+ * Return Value:	None.
  */
 void searchContacts(Contact contacts[]) {
 	// Variables
@@ -512,6 +527,7 @@ void searchContacts(Contact contacts[]) {
 	int numOfMatches = 0;
 	String searchCriteria = "";
 
+	// Get search criteria from user.
 	printf("Please enter a name to search by (First or Last, not both): ");
 	getString(searchCriteria);
 
@@ -524,8 +540,14 @@ void searchContacts(Contact contacts[]) {
 		if (pContact -> id != 0) {
 			String tempFirstName = "";
 			String tempLastName = "";
+			// Leaving original string alone and assigning to a copy string but in all lower case.
 			toLower(tempFirstName, pContact -> firstName);
 			toLower(tempLastName, pContact -> lastName);
+			/*
+			 * Using strstr, if any portion of the searchCriteria is found in the searched string
+			 * then the string will be returned, which is greater than 0, causing the if to
+			 * evaluate as true. Null returned otherwise causing if to evaluate as false.
+			 */
 			if (strstr(tempFirstName, searchCriteria) ||
 				strstr(tempLastName, searchCriteria)) {
 				results[numOfMatches] = contacts[contact];
@@ -553,9 +575,15 @@ int setID(Contact contacts[]) {
 	// Variables
 	int greatestID = 0,
 			index = 0;
+
+	// FIXME: flawed logic, if you create a new contact after deleting the one at the first
+	//  	index, the ID assigned will be incorrect. Important because ID is used to determine
+	//  	index throughout the program.
 	if (contacts[index].id == 0) {
 		return 1;
 	} else {
+		// FIXME: flawed for similar reason as above, if a middle index is deleted, while loop
+		//  will stop and assign an improper ID.
 		while(contacts[index].id > greatestID) {
 			greatestID += 1;
 			index += 1;
@@ -564,15 +592,23 @@ int setID(Contact contacts[]) {
 	}
 } // end function setID
 
-/* TODO: Incomplete documentation.
+/*
  * Name:			toLower()
- * Parameters:		None.
- * Processes:		None.
+ * Parameters:		copy		String variable where the lowercase version of the string will be
+ * 								stored.
+* 					original	Original string to be turned into all lower case.
+ * Processes:		Checks each character for case, changing to lower as appropriate and filling
+ * 					into the copy string so as to leave the original alone.
  * Return Value:	None.
  */
 void toLower(String copy, const String original) {
 	for (int character = 0; original[character] != '\0' && original[character] != '\n'; character++) {
 		if (original[character] >= 'A' && original[character] <= 'Z') {
+			/*
+			 * Since characters are really number codes, and lower case are 32 away from their
+			 * upper case equivalents, we can add 32 to an upper case character to get their
+			 * lower case equivalent.
+			 */
 			copy[character] = original[character] + 32;
 		} else {
 			copy[character] = original[character];
@@ -583,8 +619,10 @@ void toLower(String copy, const String original) {
 /*
  * Name:			updateContact()
  * Parameters:		contacts[]		The array where contacts are stored upon application start.
- * Processes:		TODO: Add processes.
- * Return Value:	TODO: Add return value.
+ * Processes:		Present a list of contact names and IDs for user to choose from. Then allow
+ * 					the user to choose which portion of the contact to update, accepting input as
+ * 					appropriate.
+ * Return Value:	None.
  */
 void updateContact(Contact contacts[]) {
 	// Variables
@@ -645,7 +683,7 @@ void updateContact(Contact contacts[]) {
 				getEmail(pContact -> email);
 				break;
 			default:
-				// Display message to use warning of invalid choice.
+				// Display message to user warning of invalid choice.
 				printf("\n**********\n\n");
 				printf("\tInvalid option chosen. Please try again entering the number to the "
 					   "left of the option in the displayed menu.");
@@ -653,7 +691,7 @@ void updateContact(Contact contacts[]) {
 				errorFlag = true;
 		} // end switch
 	} while (errorFlag);
-} // end updateContact
+} // end function updateContact
 
 /*
  * Name:			writeToFile()
@@ -664,7 +702,9 @@ void updateContact(Contact contacts[]) {
  * Return Value:	None.
  */
 void writeToFile(Contact contacts[], FILE** spFile) {
+	// Write each contact to file.
 	for (int contact = 0, index = 1; contact < MAX_NUMBER_OF_CONTACTS; contact++) {
+		// Skip any contacts with ID of 0, as they are either blank or marked for delete.
 		if (contacts[contact].id != 0) {
 			fprintf(
 					*spFile,
@@ -684,4 +724,4 @@ void writeToFile(Contact contacts[], FILE** spFile) {
 			index += 1;
 		}
 	}
-}
+} // end function writeToFile

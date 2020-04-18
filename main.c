@@ -38,9 +38,8 @@ typedef struct {
 // Prototypes
 void closeContactsFile(FILE**);
 void createContact(Contact[]);
-void deleteContact(Contact[]);
 void getEmail(String);
-unsigned int getInt();
+unsigned long int getInt();
 void getString(String);
 bool getUserChoice(Contact[]);
 void openContactsFile(String, FILE**, String);
@@ -141,9 +140,6 @@ void createContact(Contact contacts[]) {
 	getEmail(pContact -> email);
 } // end function createContact
 
-void deleteContact(Contact contacts[]) {
-}
-
 /*
  * Name:			getEmail()
  * Parameters:		string		The String where user input will be stored.
@@ -169,11 +165,12 @@ void getEmail(String string) {
 			// Checking if each character is an alphabetic, punctuation (@ or .) or space character.
 			if (!(isalpha(input[length - 1]) ||
 				  isspace(input[length - 1]) ||
-				  ispunct(input[length - 1])) ||
-				errorFlag) {
+				  ispunct(input[length - 1]) ||
+				  isdigit(input[length - 1])) ||
+				  errorFlag) {
 				errorFlag = true;
 				printf("\n**********\n\n");
-				printf("\tError: Invalid characters entered.");
+				printf("\tError: Invalid characters entered.\n");
 				printf("\t\tPlease try again, but with only letters A - Z or a - z.");
 				printf("\n\n**********\n");
 				printf("\nNew Attempt: ");
@@ -198,7 +195,7 @@ void getEmail(String string) {
  * 					will loop, prompting for input until validation passes.
  * Return Value:	An integer chosen by the application user.
  */
-unsigned int getInt() {
+unsigned long int getInt() {
 	// Variables
 	String input = "";
 	bool errorFlag = false;
@@ -217,10 +214,10 @@ unsigned int getInt() {
 			// Checking if each character is a digit.
 			if (!(isdigit(input[length - 1]) ||
 				  input[length - 1] == '\n') ||
-				errorFlag) {
+				  errorFlag) {
 				errorFlag = true;
 				printf("\n**********\n\n");
-				printf("\tError: Invalid characters entered.");
+				printf("\tError: Invalid characters entered.\n");
 				printf("\t\tPlease try again, but with only numbers 1 - 9.");
 				printf("\n\n**********\n");
 				printf("\nNew Attempt: ");
@@ -265,10 +262,10 @@ void getString(String string) {
 			// Checking if each character is an alphabetic or space character.
 			if (!(isalpha(input[length - 1]) ||
 				  isspace(input[length - 1])) ||
-				errorFlag) {
+				  errorFlag) {
 				errorFlag = true;
 				printf("\n**********\n\n");
-				printf("\tError: Invalid characters entered.");
+				printf("\tError: Invalid characters entered.\n");
 				printf("\t\tPlease try again, but with only letters A - Z or a - z.");
 				printf("\n\n**********\n");
 				printf("\nNew Attempt: ");
@@ -296,15 +293,13 @@ void getString(String string) {
  */
 bool getUserChoice(Contact contacts[]) {
 	// Variables
-	unsigned int choice = 0;
 	bool sentinel = true; // Used in while loop in main.c to decide when to terminate the program.
 
 	// Getting user choice.
 	printf("Choice: ");
-	choice = getInt();
 
 	// Call the appropriate function for the chosen menu option.
-	switch(choice) {
+	switch(getInt()) {
 		case 1:
 			createContact(contacts);
 			break;
@@ -317,11 +312,7 @@ bool getUserChoice(Contact contacts[]) {
 		case 4:
 			updateContact(contacts);
 			break;
-			// FIXME: Incomplete switch logic.
-//		case 5:
-//			printf("");
-//			break;
-		case 6:
+		case 5:
 			printf("\n\nYou have chosen to exit. Good bye! :)\n\n");
 			sentinel = false;
 			saveAndExit(contacts, "contacts.txt");
@@ -421,9 +412,8 @@ void printMenu() {
 	printf("| 1) Create a new contact.                                                 |\n");
 	printf("| 2) Print all contacts.                                                   |\n");
 	printf("| 3) Contact search.                                                       |\n");
-	printf("| 4) Update a contact.                                                     |\n");
-	printf("| 5) Delete a contact.                                                     |\n");
-	printf("| 6) Save and exit.                                                        |\n");
+	printf("| 4) Update or Delete a contact.                                           |\n");
+	printf("| 5) Save and exit.                                                        |\n");
 	printf("|                                                                          |\n");
 	printf("____________________________________________________________________________\n");
 } // end function printMenu
@@ -449,6 +439,7 @@ void printUpdateOptions() {
 	printf("| 7) Zip Code.                                                             |\n");
 	printf("| 8) Phone Number.                                                         |\n");
 	printf("| 9) Email.                                                                |\n");
+	printf("| 10) Delete.                                                              |\n");
 	printf("|                                                                          |\n");
 	printf("____________________________________________________________________________\n");
 } // end function printUpdateOptions
@@ -572,15 +563,25 @@ void searchContacts(Contact contacts[]) {
 /*
  * Name:			setID()
  * Parameters:		contacts[]		The array where contacts are stored upon application start.
- * Processes:		Set the ID for a new contact.
+ * Processes:		Set the ID for a new contact based on IDs of other contacts.
  * Return Value:	An integer value to be used as a new Contact's ID.
  */
 unsigned int setID(Contact contacts[]) {
 	// Variables
 	unsigned int greatestID = 0;
+	String control = {0};
 
+	/*
+	 * Loop through and find largest index with a stored contact. By basing the condition on a
+	 * required field of input for the user, we eliminate ID based discrepancies like adding a
+	 * contact after a contact has been deleted. We find the largest index by comparing the
+	 * firstNames in each to a control String. If they match, we know that field was blank from
+	 * file as the string validation doesn't allow for blank fields. Largest index with a
+	 * firstName is our last assigned ID.
+	 */
 	for (int contact = 0; contact < MAX_NUMBER_OF_CONTACTS; contact++) {
-		greatestID = contacts[contact].id > greatestID ? contacts[contact].id : greatestID;
+		if (strcmp(contacts[contact].firstName, control) != 0)
+			greatestID = contact + 1 > greatestID ? contact + 1 : greatestID;
 	}
 
 	return greatestID + 1;
@@ -676,6 +677,11 @@ void updateContact(Contact contacts[]) {
 				printf("Please enter the contact's email: ");
 				getEmail(pContact -> email);
 				break;
+			case 10:
+				printf("\nContact \"%s %s\" has been deleted.\n\n", pContact -> firstName,
+						pContact -> lastName);
+				pContact -> id = 0;
+				break;
 			default:
 				// Display message to user warning of invalid choice.
 				printf("\n**********\n\n");
@@ -716,6 +722,6 @@ void writeToFile(Contact contacts[], FILE** spFile) {
 			);
 			// Circumvent need for cascading ID changes during operation (delete operations).
 			index += 1;
-		}
-	}
+		} // end if
+	} // end for
 } // end function writeToFile

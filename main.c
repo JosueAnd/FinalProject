@@ -84,7 +84,7 @@ int main() {
 		printMenu();
 	} while(getUserChoice(contacts));
 
-//	system("pause");
+	system("pause");
 	return 0;
 } // end function main
 

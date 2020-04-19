@@ -37,6 +37,10 @@ typedef struct {
 
 // Prototypes
 void closeContactsFile(FILE**);
+int compareFirstAsc(const void*, const void*);
+int compareFirstDsc(const void*, const void*);
+int compareLastAsc(const void*, const void*);
+int compareLastDsc(const void*, const void*);
 void createContact(Contact[]);
 void getEmail(String);
 unsigned long int getInt();
@@ -51,7 +55,7 @@ void readContactsFromFile(Contact[], FILE**);
 void saveAndExit(Contact[], String);
 void searchContacts(Contact[]);
 unsigned int setID(Contact[]);
-void sortAscending(Contact contacts[]);
+//void sortAscending(Contact contacts[]);
 void toLower(String, const String);
 void updateContact(Contact[]);
 void writeToFile(Contact[], FILE**);
@@ -74,14 +78,13 @@ int main() {
 	readContactsFromFile(contacts, &spContacts);
 	closeContactsFile(&spContacts);
 
-	sortAscending(contacts);
-
 	// User interaction
 	printWelcome();
 	do {
 		printMenu();
 	} while(getUserChoice(contacts));
 
+//	system("pause");
 	return 0;
 } // end function main
 
@@ -100,6 +103,66 @@ void closeContactsFile(FILE** spFile) {
 		exit(101);
 	} // end if
 } // end function closeContactsFile
+
+/*
+ * Name:			compareFirstAsc()
+ * Parameters:		cont1		The first contact for comparison.
+ * 					cont2		The second contact for comparison.
+ * Processes:		Compare two contacts by their first name and report which comes first
+ * 					alphabetically.
+ * Return Value:	An integer representing whether or not one string comes before another
+ * 					alphabetically.
+ */
+int compareFirstAsc(const void* cont1, const void* cont2) {
+	Contact* contact1 = (Contact*) cont1;
+	Contact* contact2 = (Contact*) cont2;
+	return strcmp(contact1->firstName, contact2->firstName);
+}
+
+/*
+ * Name:			compareFirstDsc()
+ * Parameters:		cont1		The first contact for comparison.
+ * 					cont2		The second contact for comparison.
+ * Processes:		Compare two contacts by their first name and report which comes last
+ * 					alphabetically.
+ * Return Value:	An integer representing whether or not one string comes before another
+ * 					alphabetically.
+ */
+int compareFirstDsc(const void* cont1, const void* cont2) {
+	Contact* contact1 = (Contact*) cont1;
+	Contact* contact2 = (Contact*) cont2;
+	return -strcmp(contact1->firstName, contact2->firstName);
+}
+
+/*
+ * Name:			compareLastAsc()
+ * Parameters:		cont1		The first contact for comparison.
+ * 					cont2		The second contact for comparison.
+ * Processes:		Compare two contacts by their last name and report which comes first
+ * 					alphabetically.
+ * Return Value:	An integer representing whether or not one string comes before another
+ * 					alphabetically.
+ */
+int compareLastAsc(const void* cont1, const void* cont2) {
+	Contact* contact1 = (Contact*) cont1;
+	Contact* contact2 = (Contact*) cont2;
+	return strcmp(contact1->lastName, contact2->lastName);
+}
+
+/*
+ * Name:			compareLastDsc()
+ * Parameters:		cont1		The first contact for comparison.
+ * 					cont2		The second contact for comparison.
+ * Processes:		Compare two contacts by their last name and report which comes last
+ * 					alphabetically.
+ * Return Value:	An integer representing whether or not one string comes before another
+ * 					alphabetically.
+ */
+int compareLastDsc(const void* cont1, const void* cont2) {
+	Contact* contact1 = (Contact*) cont1;
+	Contact* contact2 = (Contact*) cont2;
+	return -strcmp(contact1->lastName, contact2->lastName);
+}
 
 /*
  * Name:			createContact()
@@ -328,12 +391,28 @@ bool getUserChoice(Contact contacts[]) {
 			printAllContacts(contacts, 'v');
 			break;
 		case 3:
-			searchContacts(contacts);
+			qsort(contacts, MAX_NUMBER_OF_CONTACTS, sizeof(Contact), compareFirstAsc);
+			printAllContacts(contacts, 'v');
 			break;
 		case 4:
-			updateContact(contacts);
+			qsort(contacts, MAX_NUMBER_OF_CONTACTS, sizeof(Contact), compareFirstDsc);
+			printAllContacts(contacts, 'v');
 			break;
 		case 5:
+			qsort(contacts, MAX_NUMBER_OF_CONTACTS, sizeof(Contact), compareLastAsc);
+			printAllContacts(contacts, 'v');
+			break;
+		case 6:
+			qsort(contacts, MAX_NUMBER_OF_CONTACTS, sizeof(Contact), compareLastDsc);
+			printAllContacts(contacts, 'v');
+			break;
+		case 7:
+			searchContacts(contacts);
+			break;
+		case 8:
+			updateContact(contacts);
+			break;
+		case 9:
 			printf("\n\nYou have chosen to exit. Good bye! :)\n\n");
 			sentinel = false;
 			saveAndExit(contacts, "contacts.txt");
@@ -432,9 +511,13 @@ void printMenu() {
 	printf("|                                                                          |\n");
 	printf("| 1) Create a new contact.                                                 |\n");
 	printf("| 2) Print all contacts.                                                   |\n");
-	printf("| 3) Contact search.                                                       |\n");
-	printf("| 4) Update or Delete a contact.                                           |\n");
-	printf("| 5) Save and exit.                                                        |\n");
+	printf("| 3) Sort ascending (by First Name).                                       |\n");
+	printf("| 4) Sort descending (by First Name).                                      |\n");
+	printf("| 5) Sort ascending (by Last Name).                                        |\n");
+	printf("| 6) Sort descending (by Last Name).                                       |\n");
+	printf("| 7) Contact search.                                                       |\n");
+	printf("| 8) Update or Delete a contact.                                           |\n");
+	printf("| 9) Save and exit.                                                        |\n");
 	printf("|                                                                          |\n");
 	printf("____________________________________________________________________________\n");
 } // end function printMenu
@@ -607,51 +690,6 @@ unsigned int setID(Contact contacts[]) {
 
 	return greatestID + 1;
 } // end function setID
-
-void sortAscending(Contact contacts[]) {
-	// Sort
-	for (int contact = MAX_NUMBER_OF_CONTACTS; contact; contact--) {
-		if (contact - 2 >= 0) {
-			Contact *pContactTemp = {0};
-			Contact *pContact1 = &contacts[contact - 2];
-			Contact *pContact2 = &contacts[contact - 1];
-			if (strcmp(pContact1->firstName, pContact2->firstName) > 0) {
-				// Move pContact1 to pContactTemp
-				strcpy(pContactTemp->firstName, pContact1->firstName);
-				strcpy(pContactTemp->lastName, pContact1->lastName);
-				pContactTemp->houseNumber = pContact1->houseNumber;
-				strcpy(pContactTemp->streetName, pContact1->streetName);
-				strcpy(pContactTemp->city, pContact1->city);
-				strcpy(pContactTemp->state, pContact1->state);
-				pContactTemp->zip = pContact1->zip;
-				pContactTemp->phoneNumber = pContact1->phoneNumber;
-				strcpy(pContactTemp->email, pContact1->email);
-
-				// Move pContact2 to pContact1
-				strcpy(pContact1->firstName, pContact2->firstName);
-				strcpy(pContact1->lastName, pContact2->lastName);
-				pContact1->houseNumber = pContact2->houseNumber;
-				strcpy(pContact1->streetName, pContact2->streetName);
-				strcpy(pContact1->city, pContact2->city);
-				strcpy(pContact1->state, pContact2->state);
-				pContact1->zip = pContact2->zip;
-				pContact1->phoneNumber = pContact2->phoneNumber;
-				strcpy(pContact1->email, pContact2->email);
-
-				// Move pContactTemp to pContact2
-				strcpy(pContact2->firstName, pContactTemp->firstName);
-				strcpy(pContact2->lastName, pContactTemp->lastName);
-				pContact2->houseNumber = pContactTemp->houseNumber;
-				strcpy(pContact2->streetName, pContactTemp->streetName);
-				strcpy(pContact2->city, pContactTemp->city);
-				strcpy(pContact2->state, pContactTemp->state);
-				pContact2->zip = pContactTemp->zip;
-				pContact2->phoneNumber = pContactTemp->phoneNumber;
-				strcpy(pContact2->email, pContactTemp->email);
-			}
-		}
-	}
-} // end function sortAscending
 
 /*
  * Name:			toLower()

@@ -5,9 +5,10 @@
 - [x] Close the contacts file.
 - [x] Create contacts.
 - [x] Retrieve contacts.
+- [x] Sort contacts.
 - [x] Search for a contact or contacts.
 - [x] Update a contact.
-- [ ] Delete a contact.
+- [x] Delete a contact.
 - [x] Save changes on exit.
 
 #### Instructions

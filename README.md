@@ -1,4 +1,4 @@
-# FinalProject
+# FinalProject [![Run on Repl.it](https://repl.it/badge/github/JosueAnd/FinalProject)](https://repl.it/github/JosueAnd/FinalProject)
 
 - [x] Open or create the contacts file.
 - [x] Read / write from / to the contacts file.
